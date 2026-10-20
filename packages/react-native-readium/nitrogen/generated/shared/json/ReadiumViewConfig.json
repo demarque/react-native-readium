@@ -18,6 +18,8 @@
     "onSelectionChange": true,
     "onSelectionAction": true,
     "onZoomChange": true,
+    "onTap": true,
+    "hidePageNumbers": true,
     "hybridRef": true
   }
 }

@@ -96,6 +96,8 @@ namespace margelo::nitro::readium { struct SourceRequestFailure; }
 namespace margelo::nitro::readium { enum class SourceRequestReason; }
 // Forward declaration of `Subject` to properly resolve imports.
 namespace margelo::nitro::readium { struct Subject; }
+// Forward declaration of `TapEvent` to properly resolve imports.
+namespace margelo::nitro::readium { struct TapEvent; }
 // Forward declaration of `ZoomEvent` to properly resolve imports.
 namespace margelo::nitro::readium { struct ZoomEvent; }
 
@@ -148,6 +150,7 @@ namespace NitroReadium { class HybridReadiumViewSpec_cxx; }
 #include "SourceRequestFailure.hpp"
 #include "SourceRequestReason.hpp"
 #include "Subject.hpp"
+#include "TapEvent.hpp"
 #include "ZoomEvent.hpp"
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/PromiseHolder.hpp>
@@ -1237,6 +1240,43 @@ namespace margelo::nitro::readium::bridge::swift {
     return optional.has_value();
   }
   inline std::function<void(const ZoomEvent& /* event */)> get_std__optional_std__function_void_const_ZoomEvent_____event______(const std::optional<std::function<void(const ZoomEvent& /* event */)>>& optional) noexcept {
+    return optional.value();
+  }
+  
+  // pragma MARK: std::function<void(const TapEvent& /* event */)>
+  /**
+   * Specialized version of `std::function<void(const TapEvent&)>`.
+   */
+  using Func_void_TapEvent = std::function<void(const TapEvent& /* event */)>;
+  /**
+   * Wrapper class for a `std::function<void(const TapEvent& / * event * /)>`, this can be used from Swift.
+   */
+  class Func_void_TapEvent_Wrapper final {
+  public:
+    explicit Func_void_TapEvent_Wrapper(std::function<void(const TapEvent& /* event */)>&& func): _function(std::make_unique<std::function<void(const TapEvent& /* event */)>>(std::move(func))) {}
+    inline void call(TapEvent event) const noexcept {
+      _function->operator()(event);
+    }
+  private:
+    std::unique_ptr<std::function<void(const TapEvent& /* event */)>> _function;
+  } SWIFT_NONCOPYABLE;
+  Func_void_TapEvent create_Func_void_TapEvent(void* NON_NULL swiftClosureWrapper) noexcept;
+  inline Func_void_TapEvent_Wrapper wrap_Func_void_TapEvent(Func_void_TapEvent value) noexcept {
+    return Func_void_TapEvent_Wrapper(std::move(value));
+  }
+  
+  // pragma MARK: std::optional<std::function<void(const TapEvent& /* event */)>>
+  /**
+   * Specialized version of `std::optional<std::function<void(const TapEvent& / * event * /)>>`.
+   */
+  using std__optional_std__function_void_const_TapEvent_____event______ = std::optional<std::function<void(const TapEvent& /* event */)>>;
+  inline std::optional<std::function<void(const TapEvent& /* event */)>> create_std__optional_std__function_void_const_TapEvent_____event______(const std::function<void(const TapEvent& /* event */)>& value) noexcept {
+    return std::optional<std::function<void(const TapEvent& /* event */)>>(value);
+  }
+  inline bool has_value_std__optional_std__function_void_const_TapEvent_____event______(const std::optional<std::function<void(const TapEvent& /* event */)>>& optional) noexcept {
+    return optional.has_value();
+  }
+  inline std::function<void(const TapEvent& /* event */)> get_std__optional_std__function_void_const_TapEvent_____event______(const std::optional<std::function<void(const TapEvent& /* event */)>>& optional) noexcept {
     return optional.value();
   }
   

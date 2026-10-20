@@ -27,6 +27,8 @@ The web reader fetches a publication over HTTP instead of opening a file:
 | Zoom                    | PDF only; `onZoomChange` reports the scale, including pinches                                                                                                                                                                                                                      |
 | `file.credentials`, LCP | Not supported: LCP is native only                                                                                                                                                                                                                                                  |
 
+`onTap` and `hidePageNumbers` are ignored on web.
+
 Use `capabilities` from `onPublicationReady` to adapt the UI rather than checking the platform.
 
 ## Next.js

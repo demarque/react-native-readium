@@ -190,6 +190,26 @@ abstract class HybridReadiumViewSpec: HybridView() {
     set(value) {
       onZoomChange = value?.let { it }
     }
+  
+  abstract var onTap: ((event: TapEvent) -> Unit)?
+  
+  private var onTap_cxx: Func_void_TapEvent?
+    @Keep
+    @DoNotStrip
+    get() {
+      return onTap?.let { Func_void_TapEvent_java(it) }
+    }
+    @Keep
+    @DoNotStrip
+    set(value) {
+      onTap = value?.let { it }
+    }
+  
+  @get:DoNotStrip
+  @get:Keep
+  @set:DoNotStrip
+  @set:Keep
+  abstract var hidePageNumbers: Boolean?
 
   // Methods
   @DoNotStrip

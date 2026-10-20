@@ -47,6 +47,7 @@ export const ReadiumView = forwardRef<ReadiumViewRef, ReadiumProps>(
       onDecorationActivated,
       onSelectionChange,
       onSelectionAction,
+      onTap,
       preferences = NO_PREFERENCES,
       decorations,
       selectionActions,
@@ -159,6 +160,9 @@ export const ReadiumView = forwardRef<ReadiumViewRef, ReadiumProps>(
             onDecorationActivated={callback(onDecorationActivated ?? noop)}
             onSelectionChange={callback(onSelectionChange ?? noop)}
             onSelectionAction={callback(onSelectionAction ?? noop)}
+            // Left undefined rather than a no-op, so native can tell whether the
+            // host listens: iOS keeps its own tap behaviour when it does not.
+            onTap={onTap ? callback(onTap) : undefined}
             hybridRef={callback((ref: any) => {
               hybridRef.current = ref;
             })}

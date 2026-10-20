@@ -142,6 +142,16 @@ using namespace margelo::nitro::readium::views;
     swiftPart.setOnZoomChange(newViewProps.onZoomChange.value);
     newViewProps.onZoomChange.isDirty = false;
   }
+  // onTap: optional
+  if (newViewProps.onTap.isDirty) {
+    swiftPart.setOnTap(newViewProps.onTap.value);
+    newViewProps.onTap.isDirty = false;
+  }
+  // hidePageNumbers: optional
+  if (newViewProps.hidePageNumbers.isDirty) {
+    swiftPart.setHidePageNumbers(newViewProps.hidePageNumbers.value);
+    newViewProps.hidePageNumbers.isDirty = false;
+  }
 
   swiftPart.afterUpdate();
 

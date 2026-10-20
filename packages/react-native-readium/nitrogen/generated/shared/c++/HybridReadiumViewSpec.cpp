@@ -42,6 +42,10 @@ namespace margelo::nitro::readium {
       prototype.registerHybridSetter("onSelectionAction", &HybridReadiumViewSpec::setOnSelectionAction);
       prototype.registerHybridGetter("onZoomChange", &HybridReadiumViewSpec::getOnZoomChange);
       prototype.registerHybridSetter("onZoomChange", &HybridReadiumViewSpec::setOnZoomChange);
+      prototype.registerHybridGetter("onTap", &HybridReadiumViewSpec::getOnTap);
+      prototype.registerHybridSetter("onTap", &HybridReadiumViewSpec::setOnTap);
+      prototype.registerHybridGetter("hidePageNumbers", &HybridReadiumViewSpec::getHidePageNumbers);
+      prototype.registerHybridSetter("hidePageNumbers", &HybridReadiumViewSpec::setHidePageNumbers);
       prototype.registerHybridMethod("goTo", &HybridReadiumViewSpec::goTo);
       prototype.registerHybridMethod("goForward", &HybridReadiumViewSpec::goForward);
       prototype.registerHybridMethod("goBackward", &HybridReadiumViewSpec::goBackward);

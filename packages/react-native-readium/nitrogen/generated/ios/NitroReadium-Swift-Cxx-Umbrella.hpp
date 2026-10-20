@@ -96,6 +96,8 @@ namespace margelo::nitro::readium { struct SourceRequestFailure; }
 namespace margelo::nitro::readium { enum class SourceRequestReason; }
 // Forward declaration of `Subject` to properly resolve imports.
 namespace margelo::nitro::readium { struct Subject; }
+// Forward declaration of `TapEvent` to properly resolve imports.
+namespace margelo::nitro::readium { struct TapEvent; }
 // Forward declaration of `ZoomEvent` to properly resolve imports.
 namespace margelo::nitro::readium { struct ZoomEvent; }
 
@@ -144,6 +146,7 @@ namespace margelo::nitro::readium { struct ZoomEvent; }
 #include "SourceRequestFailure.hpp"
 #include "SourceRequestReason.hpp"
 #include "Subject.hpp"
+#include "TapEvent.hpp"
 #include "ZoomEvent.hpp"
 #include <NitroModules/Promise.hpp>
 #include <NitroModules/Result.hpp>

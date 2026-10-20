@@ -61,6 +61,35 @@ ref.current?.goTo({
 The `positions` from [`onPublicationReady`](./opening-publications.md#when-the-publication-is-ready)
 are ready-made locators, one per position, for a page slider or "go to page".
 
+## Drawing your own chrome
+
+An app that draws its own bars and page label can take over three things:
+
+```tsx
+<ReadiumView
+  file={file}
+  hidePageNumbers
+  onTap={({ point }) => setChromeVisible((visible) => !visible)}
+/>
+```
+
+`onTap` fires for a tap on the page that nothing else used. A tap on a link, a selection, a
+decoration or a page-turn edge never reaches it. `point` is where the tap landed, in points on iOS
+and in pixels on Android.
+
+On iOS, a view with no `onTap` toggles its own navigation bar on such a tap. With `onTap` set, it
+no longer does, and it keeps the bar and the VoiceOver previous and next toolbar hidden, including
+while VoiceOver runs. The app's own controls replace them.
+
+`hidePageNumbers` hides the position label the reader draws over the page ("12 / 340"). It is off
+by default.
+
+iOS turns pages on a tap in the left or right edge of the page, as Android does. The top and
+bottom edges no longer turn pages.
+
+On Android, a PDF has no tap listener yet, so `onTap` never fires there. With a scrolling layout
+nothing turns pages by tap, so every tap on the page reaches `onTap`.
+
 ## Zoom (PDF)
 
 PDFs can be magnified through the ref: `zoomIn()`, `zoomOut()`, `setZoom(scale)` and

@@ -37,6 +37,7 @@ class ReaderViewModel(
 
     sealed class Event {
         class LocatorUpdate(val locator: Locator) : Event()
+        class Tap(val point: PointF) : Event()
         class PublicationReady(
             val tableOfContents: List<Link>,
             val positions: List<Locator>,

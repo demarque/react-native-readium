@@ -45,6 +45,7 @@ export type {
   SelectionAction,
   SelectionActionEvent,
   SelectionEvent,
+  TapEvent,
   ZoomEvent,
 } from '../specs';
 

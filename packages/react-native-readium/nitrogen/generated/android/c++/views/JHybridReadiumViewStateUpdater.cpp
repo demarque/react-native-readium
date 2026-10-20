@@ -93,6 +93,14 @@ void JHybridReadiumViewStateUpdater::updateViewProps(jni::alias_ref<jni::JClass>
     hybridView->setOnZoomChange(props->onZoomChange.value);
     props->onZoomChange.isDirty = false;
   }
+  if (props->onTap.isDirty) {
+    hybridView->setOnTap(props->onTap.value);
+    props->onTap.isDirty = false;
+  }
+  if (props->hidePageNumbers.isDirty) {
+    hybridView->setHidePageNumbers(props->hidePageNumbers.value);
+    props->hidePageNumbers.isDirty = false;
+  }
 
   // Update hybridRef if it changed
   if (props->hybridRef.isDirty) {

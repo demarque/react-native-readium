@@ -94,6 +94,8 @@ namespace margelo::nitro::readium { struct SelectionEvent; }
 namespace margelo::nitro::readium { struct SelectionActionEvent; }
 // Forward declaration of `ZoomEvent` to properly resolve imports.
 namespace margelo::nitro::readium { struct ZoomEvent; }
+// Forward declaration of `TapEvent` to properly resolve imports.
+namespace margelo::nitro::readium { struct TapEvent; }
 // Forward declaration of `SearchPage` to properly resolve imports.
 namespace margelo::nitro::readium { struct SearchPage; }
 // Forward declaration of `SearchResult` to properly resolve imports.
@@ -148,6 +150,7 @@ namespace margelo::nitro::readium { struct SearchOptions; }
 #include "SelectionEvent.hpp"
 #include "SelectionActionEvent.hpp"
 #include "ZoomEvent.hpp"
+#include "TapEvent.hpp"
 #include "SearchPage.hpp"
 #include "SearchResult.hpp"
 #include "SearchOptions.hpp"
@@ -295,6 +298,20 @@ namespace margelo::nitro::readium {
     }
     inline void setOnZoomChange(const std::optional<std::function<void(const ZoomEvent& /* event */)>>& onZoomChange) noexcept override {
       _swiftPart.setOnZoomChange(onZoomChange);
+    }
+    inline std::optional<std::function<void(const TapEvent& /* event */)>> getOnTap() noexcept override {
+      auto __result = _swiftPart.getOnTap();
+      return __result;
+    }
+    inline void setOnTap(const std::optional<std::function<void(const TapEvent& /* event */)>>& onTap) noexcept override {
+      _swiftPart.setOnTap(onTap);
+    }
+    inline std::optional<bool> getHidePageNumbers() noexcept override {
+      auto __result = _swiftPart.getHidePageNumbers();
+      return __result;
+    }
+    inline void setHidePageNumbers(std::optional<bool> hidePageNumbers) noexcept override {
+      _swiftPart.setHidePageNumbers(hidePageNumbers);
     }
 
   public:

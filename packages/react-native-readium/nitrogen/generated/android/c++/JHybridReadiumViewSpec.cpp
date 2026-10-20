@@ -89,6 +89,8 @@ namespace margelo::nitro::readium { struct SelectionEvent; }
 namespace margelo::nitro::readium { struct SelectionActionEvent; }
 // Forward declaration of `ZoomEvent` to properly resolve imports.
 namespace margelo::nitro::readium { struct ZoomEvent; }
+// Forward declaration of `TapEvent` to properly resolve imports.
+namespace margelo::nitro::readium { struct TapEvent; }
 // Forward declaration of `SearchPage` to properly resolve imports.
 namespace margelo::nitro::readium { struct SearchPage; }
 // Forward declaration of `SearchResult` to properly resolve imports.
@@ -196,6 +198,9 @@ namespace margelo::nitro::readium { struct SearchOptions; }
 #include "ZoomEvent.hpp"
 #include "JFunc_void_ZoomEvent.hpp"
 #include "JZoomEvent.hpp"
+#include "TapEvent.hpp"
+#include "JFunc_void_TapEvent.hpp"
+#include "JTapEvent.hpp"
 #include "SearchPage.hpp"
 #include "JSearchPage.hpp"
 #include "SearchResult.hpp"
@@ -474,6 +479,32 @@ namespace margelo::nitro::readium {
   void JHybridReadiumViewSpec::setOnZoomChange(const std::optional<std::function<void(const ZoomEvent& /* event */)>>& onZoomChange) {
     static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_ZoomEvent::javaobject> /* onZoomChange */)>("setOnZoomChange_cxx");
     method(_javaPart, onZoomChange.has_value() ? JFunc_void_ZoomEvent_cxx::fromCpp(onZoomChange.value()) : nullptr);
+  }
+  std::optional<std::function<void(const TapEvent& /* event */)>> JHybridReadiumViewSpec::getOnTap() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_TapEvent::javaobject>()>("getOnTap_cxx");
+    auto __result = method(_javaPart);
+    return __result != nullptr ? std::make_optional([&]() -> std::function<void(const TapEvent& /* event */)> {
+      if (__result->isInstanceOf(JFunc_void_TapEvent_cxx::javaClassStatic())) [[likely]] {
+        auto downcast = jni::static_ref_cast<JFunc_void_TapEvent_cxx::javaobject>(__result);
+        return downcast->cthis()->getFunction();
+      } else {
+        auto __resultRef = jni::make_global(__result);
+        return JNICallable<JFunc_void_TapEvent, void(TapEvent)>(std::move(__resultRef));
+      }
+    }()) : std::nullopt;
+  }
+  void JHybridReadiumViewSpec::setOnTap(const std::optional<std::function<void(const TapEvent& /* event */)>>& onTap) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_TapEvent::javaobject> /* onTap */)>("setOnTap_cxx");
+    method(_javaPart, onTap.has_value() ? JFunc_void_TapEvent_cxx::fromCpp(onTap.value()) : nullptr);
+  }
+  std::optional<bool> JHybridReadiumViewSpec::getHidePageNumbers() {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JBoolean>()>("getHidePageNumbers");
+    auto __result = method(_javaPart);
+    return __result != nullptr ? std::make_optional(static_cast<bool>(__result->value())) : std::nullopt;
+  }
+  void JHybridReadiumViewSpec::setHidePageNumbers(std::optional<bool> hidePageNumbers) {
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JBoolean> /* hidePageNumbers */)>("setHidePageNumbers");
+    method(_javaPart, hidePageNumbers.has_value() ? jni::JBoolean::valueOf(hidePageNumbers.value()) : nullptr);
   }
 
   // Methods

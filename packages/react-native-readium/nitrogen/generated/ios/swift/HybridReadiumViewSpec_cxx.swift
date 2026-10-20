@@ -576,6 +576,62 @@ open class HybridReadiumViewSpec_cxx {
       }()
     }
   }
+  
+  public final var onTap: bridge.std__optional_std__function_void_const_TapEvent_____event______ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_std__function_void_const_TapEvent_____event______ in
+        if let __unwrappedValue = self.__implementation.onTap {
+          return bridge.create_std__optional_std__function_void_const_TapEvent_____event______({ () -> bridge.Func_void_TapEvent in
+            let __closureWrapper = Func_void_TapEvent(__unwrappedValue)
+            return bridge.create_Func_void_TapEvent(__closureWrapper.toUnsafe())
+          }())
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.onTap = { () -> ((_ event: TapEvent) -> Void)? in
+        if bridge.has_value_std__optional_std__function_void_const_TapEvent_____event______(newValue) {
+          let __unwrapped = bridge.get_std__optional_std__function_void_const_TapEvent_____event______(newValue)
+          return { () -> (TapEvent) -> Void in
+            let __wrappedFunction = bridge.wrap_Func_void_TapEvent(__unwrapped)
+            return { (__event: TapEvent) -> Void in
+              __wrappedFunction.call(__event)
+            }
+          }()
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
+  
+  public final var hidePageNumbers: bridge.std__optional_bool_ {
+    @inline(__always)
+    get {
+      return { () -> bridge.std__optional_bool_ in
+        if let __unwrappedValue = self.__implementation.hidePageNumbers {
+          return bridge.create_std__optional_bool_(__unwrappedValue)
+        } else {
+          return .init()
+        }
+      }()
+    }
+    @inline(__always)
+    set {
+      self.__implementation.hidePageNumbers = { () -> Bool? in
+        if bridge.has_value_std__optional_bool_(newValue) {
+          let __unwrapped = bridge.get_std__optional_bool_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
+    }
+  }
 
   // Methods
   @inline(__always)

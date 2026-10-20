@@ -78,6 +78,10 @@ namespace margelo::nitro::readium {
     void setOnSelectionAction(const std::optional<std::function<void(const SelectionActionEvent& /* event */)>>& onSelectionAction) override;
     std::optional<std::function<void(const ZoomEvent& /* event */)>> getOnZoomChange() override;
     void setOnZoomChange(const std::optional<std::function<void(const ZoomEvent& /* event */)>>& onZoomChange) override;
+    std::optional<std::function<void(const TapEvent& /* event */)>> getOnTap() override;
+    void setOnTap(const std::optional<std::function<void(const TapEvent& /* event */)>>& onTap) override;
+    std::optional<bool> getHidePageNumbers() override;
+    void setHidePageNumbers(std::optional<bool> hidePageNumbers) override;
 
   public:
     // Methods

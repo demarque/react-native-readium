@@ -15,6 +15,7 @@ import com.reactnativereadium.reader.SourceRecovery
 import com.reactnativereadium.reader.ReaderViewModel
 import com.reactnativereadium.reader.SearchPageData
 import com.reactnativereadium.reader.SelectionAction as FragmentSelectionAction
+import com.reactnativereadium.reader.VisualReaderFragment
 import com.reactnativereadium.utils.nitroPreferencesToEpub
 import com.reactnativereadium.utils.nitroPreferencesToPdf
 import com.reactnativereadium.utils.nitroLocatorToReadium
@@ -187,6 +188,13 @@ class HybridReadiumView(private val context: android.content.Context) : HybridRe
    * view has one definition, and web does have something to say.
    */
   override var onZoomChange: ((event: ZoomEvent) -> Unit)? = null
+  override var onTap: ((event: TapEvent) -> Unit)? = null
+
+  override var hidePageNumbers: Boolean? = null
+    set(value) {
+      field = value
+      (fragment as? VisualReaderFragment)?.setHidePageNumbers(value ?: false)
+    }
 
   /**
    * Every prop for this render has arrived.
@@ -487,6 +495,9 @@ class HybridReadiumView(private val context: android.content.Context) : HybridRe
 
     val containerId = assignContainerId(activity)
 
+    // Before the commit: the position label is created along with the fragment's view.
+    (frag as? VisualReaderFragment)?.setHidePageNumbers(hidePageNumbers ?: false)
+
     // Apply selection actions BEFORE committing so they're available
     // during onCreate when the callback is conditionally registered.
     selectionActions?.takeIf { it.isNotEmpty() }?.let { actions ->
@@ -525,6 +536,9 @@ class HybridReadiumView(private val context: android.content.Context) : HybridRe
       when (event) {
         is ReaderViewModel.Event.LocatorUpdate -> {
           onLocationChange?.invoke(readiumLocatorToNitro(event.locator))
+        }
+        is ReaderViewModel.Event.Tap -> {
+          onTap?.invoke(TapEvent(point = Point(x = event.point.x.toDouble(), y = event.point.y.toDouble())))
         }
         is ReaderViewModel.Event.PublicationReady -> {
           onPublicationReady?.invoke(PublicationReadyEvent(

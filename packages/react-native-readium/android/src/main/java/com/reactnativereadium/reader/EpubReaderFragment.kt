@@ -25,6 +25,7 @@ import org.readium.r2.navigator.Navigator
 import org.readium.r2.navigator.epub.EpubPreferences
 import org.readium.r2.navigator.epub.EpubNavigatorFactory
 import org.readium.r2.navigator.input.InputListener
+import org.readium.r2.navigator.input.TapEvent
 import org.readium.r2.navigator.util.DirectionalNavigationAdapter
 import org.readium.r2.shared.publication.Locator
 import org.readium.r2.shared.publication.Publication
@@ -60,9 +61,11 @@ class EpubReaderFragment : VisualReaderFragment() {
     private lateinit var navigatorFactory: EpubNavigatorFactory
     private var pendingPreferences: EpubPreferences? = null
 
-    // Retained so onDestroyView can remove it: CompositeInputListener.add does not dedupe.
+    // Retained so onDestroyView can remove them: CompositeInputListener.add does not dedupe.
     @OptIn(ExperimentalReadiumApi::class)
     private var tapInputListener: InputListener? = null
+    @OptIn(ExperimentalReadiumApi::class)
+    private var hostTapInputListener: InputListener? = null
 
     private lateinit var userPreferences: EpubPreferences
 
@@ -254,6 +257,17 @@ class EpubReaderFragment : VisualReaderFragment() {
         tapInputListener = tapListener
         navigatorFragment.addInputListener(tapListener)
 
+        // Registered after the adapter: CompositeInputListener.onTap stops at the first listener
+        // returning true, so only taps that did not turn a page reach the host.
+        val hostTapListener = object : InputListener {
+            override fun onTap(event: TapEvent): Boolean {
+                channel.send(ReaderViewModel.Event.Tap(event.point))
+                return true
+            }
+        }
+        hostTapInputListener = hostTapListener
+        navigatorFragment.addInputListener(hostTapListener)
+
         applyPendingPreferencesIfNeeded()
 
         return view
@@ -264,6 +278,8 @@ class EpubReaderFragment : VisualReaderFragment() {
         // Via the nullable field: onCreateView can fail before navigatorFragment is assigned.
         tapInputListener?.let { navigatorFragment.removeInputListener(it) }
         tapInputListener = null
+        hostTapInputListener?.let { navigatorFragment.removeInputListener(it) }
+        hostTapInputListener = null
         super.onDestroyView()
     }
 

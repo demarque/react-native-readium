@@ -27,6 +27,7 @@ class PositionLabelManager(
     private var positionsLoadingJob: Job? = null
     private var lastKnownPosition: Int? = null
     private var lastKnownProgression: Double? = null
+    private var hidden = false
 
     init {
         setupLabel()
@@ -55,7 +56,17 @@ class PositionLabelManager(
     fun update(position: Int?, totalProgression: Double?) {
         lastKnownPosition = position
         lastKnownProgression = totalProgression
+        if (hidden) return
         show(positionLabelText(position, totalProgression))
+    }
+
+    /**
+     * Hides the label, and stops loading the positions count it needs.
+     * Should be called on the main thread.
+     */
+    fun setHidden(hidden: Boolean) {
+        this.hidden = hidden
+        show(if (hidden) null else positionLabelText(lastKnownPosition, lastKnownProgression))
     }
 
     private fun positionLabelText(position: Int?, totalProgression: Double?): String? {
@@ -86,7 +97,7 @@ class PositionLabelManager(
                 positionsCount = positions.size
 
                 // Refresh label with the new count
-                show(positionLabelText(lastKnownPosition, lastKnownProgression))
+                if (!hidden) show(positionLabelText(lastKnownPosition, lastKnownProgression))
             } catch (e: Exception) {
                 // Failed to load positions, continue showing position without total
             }

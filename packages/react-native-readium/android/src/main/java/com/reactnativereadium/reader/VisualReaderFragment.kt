@@ -30,6 +30,9 @@ abstract class VisualReaderFragment : BaseReaderFragment() {
 
     private var positionLabelManager: PositionLabelManager? = null
 
+    // Kept here as well, since the host can set it before the label exists.
+    private var hidePageNumbers = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +49,7 @@ abstract class VisualReaderFragment : BaseReaderFragment() {
             label = binding.positionLabel,
             publication = model.publication,
             lifecycleScope = viewLifecycleOwner.lifecycleScope
-        )
+        ).also { it.setHidden(hidePageNumbers) }
 
         // Update position label when navigator location changes
         navigator.currentLocator
@@ -65,6 +68,14 @@ abstract class VisualReaderFragment : BaseReaderFragment() {
         positionLabelManager = null
         _binding = null
         super.onDestroyView()
+    }
+
+    /**
+     * Hides or shows the position label. Safe to call before the view exists.
+     */
+    fun setHidePageNumbers(hidden: Boolean) {
+        hidePageNumbers = hidden
+        positionLabelManager?.setHidden(hidden)
     }
 
     /**

@@ -94,6 +94,24 @@ class HybridReadiumView: HybridReadiumViewSpec {
   /// one definition, and web does have something to say.
   var onZoomChange: ((ZoomEvent) -> Void)? = nil
 
+  var onTap: ((TapEvent) -> Void)? = nil {
+    didSet {
+      Task { @MainActor [weak self] in
+        guard let self else { return }
+        self.readerViewController?.onTap = self.tapHandler
+      }
+    }
+  }
+
+  var hidePageNumbers: Bool? = nil {
+    didSet {
+      Task { @MainActor [weak self] in
+        guard let self else { return }
+        self.readerViewController?.hidePageNumbers = self.hidePageNumbers ?? false
+      }
+    }
+  }
+
   // MARK: - Private state
 
   /**
@@ -154,6 +172,14 @@ class HybridReadiumView: HybridReadiumViewSpec {
   private var loadGeneration = 0
   private var selectionActionsReceived = false
   private var activeDecorationGroups = Set<String>()
+
+  /// `nil` while the host passed no `onTap`, so the controller keeps its own navigation bar toggle.
+  private var tapHandler: ((CGPoint) -> Void)? {
+    guard let onTap else { return nil }
+    return { point in
+      onTap(TapEvent(point: Point(x: Double(point.x), y: Double(point.y))))
+    }
+  }
 
   private var viewController: UIViewController? {
     let vc = sequence(first: hostView, next: { $0.next }).first(where: { $0 is UIViewController })
@@ -363,6 +389,8 @@ class HybridReadiumView: HybridReadiumViewSpec {
     readerViewController = vc
 
     // Apply pending state
+    vc.onTap = tapHandler
+    vc.hidePageNumbers = hidePageNumbers ?? false
     if preferences != nil {
       Task { @MainActor [weak self] in
         self?.updatePreferences()

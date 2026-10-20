@@ -166,6 +166,26 @@ namespace margelo::nitro::readium::views {
         throw std::runtime_error(std::string("ReadiumView.onZoomChange: ") + exc.what());
       }
     }()),
+    onTap([&]() -> CachedProp<std::optional<std::function<void(const TapEvent& /* event */)>>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("onTap", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.onTap;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<std::function<void(const TapEvent& /* event */)>>>::fromRawValue(*runtime, value.asObject(*runtime).getProperty(*runtime, PropNameIDCache::get(*runtime, "f")), sourceProps.onTap);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("ReadiumView.onTap: ") + exc.what());
+      }
+    }()),
+    hidePageNumbers([&]() -> CachedProp<std::optional<bool>> {
+      try {
+        const react::RawValue* rawValue = rawProps.at("hidePageNumbers", nullptr, nullptr);
+        if (rawValue == nullptr) return sourceProps.hidePageNumbers;
+        const auto& [runtime, value] = (std::pair<jsi::Runtime*, jsi::Value>)*rawValue;
+        return CachedProp<std::optional<bool>>::fromRawValue(*runtime, value, sourceProps.hidePageNumbers);
+      } catch (const std::exception& exc) {
+        throw std::runtime_error(std::string("ReadiumView.hidePageNumbers: ") + exc.what());
+      }
+    }()),
     hybridRef([&]() -> CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridReadiumViewSpec>& /* ref */)>>> {
       try {
         const react::RawValue* rawValue = rawProps.at("hybridRef", nullptr, nullptr);
@@ -193,6 +213,8 @@ namespace margelo::nitro::readium::views {
       case hashString("onSelectionChange"): return true;
       case hashString("onSelectionAction"): return true;
       case hashString("onZoomChange"): return true;
+      case hashString("onTap"): return true;
+      case hashString("hidePageNumbers"): return true;
       case hashString("hybridRef"): return true;
       default: return false;
     }

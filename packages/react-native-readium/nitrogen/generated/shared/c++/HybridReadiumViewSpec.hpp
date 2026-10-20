@@ -43,6 +43,8 @@ namespace margelo::nitro::readium { struct SelectionEvent; }
 namespace margelo::nitro::readium { struct SelectionActionEvent; }
 // Forward declaration of `ZoomEvent` to properly resolve imports.
 namespace margelo::nitro::readium { struct ZoomEvent; }
+// Forward declaration of `TapEvent` to properly resolve imports.
+namespace margelo::nitro::readium { struct TapEvent; }
 // Forward declaration of `SearchPage` to properly resolve imports.
 namespace margelo::nitro::readium { struct SearchPage; }
 // Forward declaration of `SearchOptions` to properly resolve imports.
@@ -67,6 +69,7 @@ namespace margelo::nitro::readium { struct SearchOptions; }
 #include "SelectionEvent.hpp"
 #include "SelectionActionEvent.hpp"
 #include "ZoomEvent.hpp"
+#include "TapEvent.hpp"
 #include "SearchPage.hpp"
 #include <string>
 #include "SearchOptions.hpp"
@@ -126,6 +129,10 @@ namespace margelo::nitro::readium {
       virtual void setOnSelectionAction(const std::optional<std::function<void(const SelectionActionEvent& /* event */)>>& onSelectionAction) = 0;
       virtual std::optional<std::function<void(const ZoomEvent& /* event */)>> getOnZoomChange() = 0;
       virtual void setOnZoomChange(const std::optional<std::function<void(const ZoomEvent& /* event */)>>& onZoomChange) = 0;
+      virtual std::optional<std::function<void(const TapEvent& /* event */)>> getOnTap() = 0;
+      virtual void setOnTap(const std::optional<std::function<void(const TapEvent& /* event */)>>& onTap) = 0;
+      virtual std::optional<bool> getHidePageNumbers() = 0;
+      virtual void setHidePageNumbers(std::optional<bool> hidePageNumbers) = 0;
 
     public:
       // Methods

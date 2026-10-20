@@ -26,6 +26,7 @@
 #include "JFunc_void_SelectionEvent.hpp"
 #include "JFunc_void_SelectionActionEvent.hpp"
 #include "JFunc_void_ZoomEvent.hpp"
+#include "JFunc_void_TapEvent.hpp"
 #include "views/JHybridReadiumViewStateUpdater.hpp"
 #include <NitroModules/DefaultConstructableObject.hpp>
 
@@ -62,6 +63,7 @@ void registerAllNatives() {
   margelo::nitro::readium::JFunc_void_SelectionEvent_cxx::registerNatives();
   margelo::nitro::readium::JFunc_void_SelectionActionEvent_cxx::registerNatives();
   margelo::nitro::readium::JFunc_void_ZoomEvent_cxx::registerNatives();
+  margelo::nitro::readium::JFunc_void_TapEvent_cxx::registerNatives();
   margelo::nitro::readium::views::JHybridReadiumViewStateUpdater::registerNatives();
 
   // Register Nitro Hybrid Objects

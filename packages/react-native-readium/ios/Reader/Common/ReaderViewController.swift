@@ -27,6 +27,26 @@ class ReaderViewController: UIViewController, Loggable {
   // deallocated at the end of the statement and immediately unbinds.
   private var directionalNavigationAdapter: DirectionalNavigationAdapter?
 
+  /// Set by a host that draws its own chrome. Taps the navigator leaves unhandled go to it instead of
+  /// toggling the navigation bar, and the native chrome stays hidden whatever VoiceOver does.
+  var onTap: ((CGPoint) -> Void)? {
+    didSet {
+      guard isViewLoaded, stackView != nil else { return }
+      updateAccessibilityChrome()
+      updateNavigationBar()
+    }
+  }
+
+  /// Hides the native "x / N" position label.
+  var hidePageNumbers: Bool = false {
+    didSet {
+      positionLabel.isHidden = hidePageNumbers
+      if !hidePageNumbers {
+        refreshPositionLabel()
+      }
+    }
+  }
+
   /// This regex matches any string with at least 2 consecutive letters (not limited to ASCII).
   /// It's used when evaluating whether to display the body of a noteref referrer as the note's title.
   /// I.e. a `*` or `1` would not be used as a title, but `on` or `好書` would.
@@ -123,8 +143,13 @@ class ReaderViewController: UIViewController, Loggable {
     navigationBarHidden = !navigationBarHidden
   }
 
+  /// VoiceOver forces the native bar and toolbar on, unless the host draws its own chrome.
+  private var showsNativeChromeForVoiceOver: Bool {
+    UIAccessibility.isVoiceOverRunning && onTap == nil
+  }
+
   func updateNavigationBar(animated: Bool = true) {
-    let hidden = navigationBarHidden && !UIAccessibility.isVoiceOverRunning
+    let hidden = navigationBarHidden && !showsNativeChromeForVoiceOver
     navigationController?.setNavigationBarHidden(hidden, animated: animated)
     setNeedsStatusBarAppearanceUpdate()
   }
@@ -134,7 +159,7 @@ class ReaderViewController: UIViewController, Loggable {
   }
 
   override var prefersStatusBarHidden: Bool {
-    return navigationBarHidden && !UIAccessibility.isVoiceOverRunning
+    return navigationBarHidden && !showsNativeChromeForVoiceOver
   }
 
 
@@ -167,7 +192,7 @@ class ReaderViewController: UIViewController, Loggable {
       makeItem(.fastForward, label: NSLocalizedString("reader_forward_a11y_label", value: "Next page", comment: "Accessibility label to go forward in the publication"), action: #selector(goForward)),
       makeItem(.flexibleSpace),
     ]
-    toolbar.isHidden = !UIAccessibility.isVoiceOverRunning
+    toolbar.isHidden = !showsNativeChromeForVoiceOver
     toolbar.tintColor = UIColor.black
     return toolbar
   }()
@@ -181,9 +206,14 @@ class ReaderViewController: UIViewController, Loggable {
       return
     }
     isVoiceOverRunning = isRunning
-    accessibilityTopMargin.isActive = isRunning
-    accessibilityToolbar.isHidden = !isRunning
+    updateAccessibilityChrome()
     updateNavigationBar()
+  }
+
+  private func updateAccessibilityChrome() {
+    let shown = showsNativeChromeForVoiceOver
+    accessibilityTopMargin.isActive = shown
+    accessibilityToolbar.isHidden = !shown
   }
 
   private func configureNavigatorInteractions() {
@@ -196,7 +226,7 @@ class ReaderViewController: UIViewController, Loggable {
     }
 
     let directionalNavigationAdapter = DirectionalNavigationAdapter(
-      pointerPolicy: .init(edges: .all),
+      pointerPolicy: .init(edges: .horizontal),
       animatedTransition: true
     )
     directionalNavigationAdapter.bind(to: visualNavigator)
@@ -210,7 +240,11 @@ class ReaderViewController: UIViewController, Loggable {
         return false
       }
 
-      self.toggleNavigationBar()
+      if let onTap = self.onTap {
+        onTap(event.location)
+      } else {
+        self.toggleNavigationBar()
+      }
       return true
     })
     toggleToken.store(in: &navigatorInputObserverTokens)
@@ -339,6 +373,9 @@ extension ReaderViewController {
   }
 
   private func loadPositionsCountIfNeeded() {
+    guard !hidePageNumbers else {
+      return
+    }
     guard positionsCount == nil else {
       return
     }

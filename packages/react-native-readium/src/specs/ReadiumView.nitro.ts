@@ -14,6 +14,7 @@ import {
 import type {
   DecorationActivatedEvent,
   DecorationGroup,
+  Point,
 } from './decorations.nitro';
 import type { PublicationErrorEvent } from './errors.nitro';
 import type { Link, Locator } from './locator.nitro';
@@ -75,6 +76,18 @@ export interface ZoomEvent {
   min: number;
   /** Largest `scale` the current layout allows. */
   max: number;
+}
+
+/**
+ * Reported by `onTap` when the reader is tapped and nothing in the page used
+ * the tap.
+ */
+export interface TapEvent {
+  /**
+   * Where the tap landed, in the view's coordinates: points on iOS and pixels
+   * on Android, as with the `point` of a decoration event.
+   */
+  point: Point;
 }
 
 // ── File ─────────────────────────────────────────────────────────────────────
@@ -215,6 +228,28 @@ export interface ReadiumViewProps extends HybridViewProps {
    * to relay.
    */
   onZoomChange?: (event: ZoomEvent) => void;
+  /**
+   * The user tapped the page and nothing used the tap. A tap on a link, a
+   * selection, a decoration or a page-turn edge never arrives here.
+   *
+   * Left unset, iOS keeps toggling its native navigation bar on such a tap.
+   * Set it and the host draws its own chrome instead: iOS stops toggling the
+   * bar, and keeps the bar and the VoiceOver previous and next toolbar hidden,
+   * including while VoiceOver runs.
+   *
+   * With a scrolling layout nothing turns pages by tap, so every tap arrives.
+   * A PDF on Android has no tap listener yet, so nothing arrives there.
+   *
+   * @platform iOS, Android. Ignored on web.
+   */
+  onTap?: (event: TapEvent) => void;
+  /**
+   * Hides the native position label ("12 / 340") that the reader draws over
+   * the page, for a host that shows its own. Off by default.
+   *
+   * @platform iOS, Android. Ignored on web.
+   */
+  hidePageNumbers?: boolean;
 }
 
 /**

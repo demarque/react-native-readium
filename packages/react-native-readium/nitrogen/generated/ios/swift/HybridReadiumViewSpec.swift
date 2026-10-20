@@ -24,6 +24,8 @@ public protocol HybridReadiumViewSpec_protocol: HybridObject, HybridView {
   var onSelectionChange: ((_ event: SelectionEvent) -> Void)? { get set }
   var onSelectionAction: ((_ event: SelectionActionEvent) -> Void)? { get set }
   var onZoomChange: ((_ event: ZoomEvent) -> Void)? { get set }
+  var onTap: ((_ event: TapEvent) -> Void)? { get set }
+  var hidePageNumbers: Bool? { get set }
 
   // Methods
   func goTo(locator: Locator) throws -> Void

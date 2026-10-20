@@ -35,6 +35,7 @@
 #include "SelectionEvent.hpp"
 #include "SelectionActionEvent.hpp"
 #include "ZoomEvent.hpp"
+#include "TapEvent.hpp"
 #include <memory>
 #include "HybridReadiumViewSpec.hpp"
 
@@ -72,6 +73,8 @@ namespace margelo::nitro::readium::views {
     CachedProp<std::optional<std::function<void(const SelectionEvent& /* event */)>>> onSelectionChange;
     CachedProp<std::optional<std::function<void(const SelectionActionEvent& /* event */)>>> onSelectionAction;
     CachedProp<std::optional<std::function<void(const ZoomEvent& /* event */)>>> onZoomChange;
+    CachedProp<std::optional<std::function<void(const TapEvent& /* event */)>>> onTap;
+    CachedProp<std::optional<bool>> hidePageNumbers;
     CachedProp<std::optional<std::function<void(const std::shared_ptr<HybridReadiumViewSpec>& /* ref */)>>> hybridRef;
 
   private:
